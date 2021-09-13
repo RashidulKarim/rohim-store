@@ -1,13 +1,12 @@
+//load data onLoad
 const loadProducts = () => {
-  // const url = `https://fakestoreapi.com/products`;
   fetch("../data.json")
-  // fetch(url)
     .then((response) => response.json())
     .then((data) => showProducts(data));
 };
 loadProducts();
 
-// search filed 
+// search by catagory && get data by fetch 
 const search = () => {
   const searchField = document.getElementById('search-field');
   const errorField = document.getElementById('searchError');
@@ -35,10 +34,9 @@ const search = () => {
 
 // show all product in UI 
 const showProducts = (products) => {   
-  const allProductsField = document.getElementById("all-products");
-  allProductsField.textContent = ''; 
-  const allProducts = products.map((pd) => pd);
-  for (const product of allProducts) {
+  const allProductsArea = document.getElementById("all-products");
+  allProductsArea.textContent = ''; 
+  for (const product of products) {
     const image = product.image;
     const div = document.createElement("div");
     div.classList.add("product");
@@ -52,20 +50,23 @@ const showProducts = (products) => {
       </span><span>${product.rating.count} reviews.</span></p>
       <h3>Price: $ ${product.price}</h3>
       <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button id="details-btn" data-toggle="modal" data-target="#myModal" onclick=loadDetails(${product.id}) class="btn btn-danger">Details</button></div>
+      <button id="details-btn" data-toggle="modal" data-target="#myModal" onclick=loadDetails(${product.id}) class="btn btn-danger">Details</button>
+      </div>
       `;
-    allProductsField.appendChild(div);
+    allProductsArea.appendChild(div);
   }
 };
 let count = 0;
+const totalProducts = document.getElementById("total-Products");
+const orderCompleteMassage = document.getElementById("orderCompleteMassage");
+// add product to cart 
 const addToCart = (id, price) => {
-  document.getElementById("orderCompleteMassage").innerText = '';
+  orderCompleteMassage.innerText = '';
   count = count + 1;
   updatePrice("price", price);
-
   updateTaxAndCharge();
   updateTotal();
-  document.getElementById("total-Products").innerText = count;
+  totalProducts.innerText = count;
 };
 
 const getInputValue = (id) => {
@@ -76,9 +77,9 @@ const getInputValue = (id) => {
 
 // main price update function
 const updatePrice = (id, value) => {
-  const convertedOldPrice = getInputValue(id);
-  const convertPrice = parseFloat(value);
-  const total = convertedOldPrice + convertPrice;
+  const previousProductPrice = getInputValue(id);
+  const currentProductPrice = parseFloat(value);
+  const total = previousProductPrice  + currentProductPrice;
   document.getElementById(id).innerText = total.toFixed(2);
 };
 
@@ -89,18 +90,18 @@ const setInnerText = (id, value) => {
 
 // update delivery charge and total Tax
 const updateTaxAndCharge = () => {
-  const priceConverted = getInputValue("price");
-  if (priceConverted > 200) {
+  const price = getInputValue("price");
+  if (price > 200) {
     setInnerText("delivery-charge", 30);
-    setInnerText("total-tax", priceConverted * 0.2);
+    setInnerText("total-tax", price * 0.2);
   }
-  if (priceConverted > 400) {
+  if (price > 400) {
     setInnerText("delivery-charge", 50);
-    setInnerText("total-tax", priceConverted * 0.3);
+    setInnerText("total-tax", price * 0.3);
   }
-  if (priceConverted > 500) {
+  if (price > 500) {
     setInnerText("delivery-charge", 60);
-    setInnerText("total-tax", priceConverted * 0.4);
+    setInnerText("total-tax", price * 0.4);
   }
 };
 
@@ -116,12 +117,11 @@ const updateTotal = () => {
 //buy now btn 
 
 const completeOrder = () => {
-  const massageField = document.getElementById("orderCompleteMassage");
   if(count>0){
-    massageField.innerText = "Thank You for Your Order.";
-    massageField.style.color = "green";
+    orderCompleteMassage.innerText = "Thank You for Your Order.";
+    orderCompleteMassage.style.color = "green";
     count = 0;
-    document.getElementById("total-Products").innerText = "0";
+    totalProducts.innerText = count;
     document.getElementById("price").innerText = "0";
     document.getElementById("delivery-charge").innerText = "20";
     document.getElementById("total-tax").innerText = "0";
@@ -129,13 +129,13 @@ const completeOrder = () => {
 
   }
   else{
-    massageField.innerText = "Please add to cart any product to order";
-    massageField.style.color = "red";
+    orderCompleteMassage.innerText = "Please add to cart any product to order";
+    orderCompleteMassage.style.color = "red";
   }
 }
 
-//show product details
 
+//load product details
 const loadDetails = id => {
   const url = `https://fakestoreapi.com/products/${id}`
   fetch(url)
@@ -144,16 +144,11 @@ const loadDetails = id => {
   )
   
 }
-
+//show product details into modal
 const productDetails = (product) => {
-  console.log(product);
-  
   const modal = document.getElementById("myModal");
-    const span = document.getElementsByClassName("close")[0];
-
+  const span = document.getElementsByClassName("close")[0];
     modal.style.display = "block";
-
-
     span.onclick = function() {
     modal.style.display = "none";
 }
@@ -171,7 +166,5 @@ modalBody.innerHTML = `
 <h2 class='title'>${product.title}</h2>
 <p > ${product.description}</p>
 </div>
-`
-                
-               
+`          
 }

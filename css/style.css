@@ -2,14 +2,15 @@ body {
   overflow-x: hidden;
   font-family: "Montserrat", sans-serif;
 }
-.full-body{
-  background-color: rgba(19, 11, 11, 0.068);
+.body{
+  background-color: rgba(116, 104, 104, 0.164);
 }
+
+/* search filed and btn design  */
 .search {
   width: 100%;
   display: flex;
 }
-
 .searchTerm {
   width: 100%;
   border: 3px solid #00B4CC;
@@ -37,11 +38,11 @@ body {
   font-size: 20px;
 }
 
-/*Resize the wrap to see the search bar change!*/
 .wrap{
   width: 30%;
   margin: 30px auto 10px;
 }
+/* product related design  */
 #all-products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -71,10 +72,17 @@ body {
   font-weight: bold;
 }
 .product{
-  background-color: #9dbfaf1f;
+  background-color: #9dbfaf21;
   margin: 10px;
   border-radius: 15px;
 }
+.product-img{
+  width: 150px;
+}
+.title{
+  font-weight: bold;
+}
+/* cart design  */
 .cart {
   width: 350px;
   /* border: 1px solid green; */
@@ -92,6 +100,8 @@ body {
   margin: 10px 0px;
   text-align: center;
 }
+
+/* modal design  */
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -129,12 +139,7 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
-.product-img{
-  width: 150px;
-}
-.title{
-  font-weight: bold;
-}
+/* media quarey  */
 @media only screen and (max-width: 768px) {
   #all-products {
     display: grid;
