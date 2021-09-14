@@ -64,7 +64,7 @@ const showProducts = (products) => {
       </div>
       <h2 class='product-title'>${product.title.slice(0,20)}</h2>
       <p>Category: ${product.category}</p>
-      <p>Ratting: <span class='ratting'>${star}</i>.
+      <p>Ratting: <span class='ratting'>${star} (${ratting})</i>.
       </span></p>
       <p><i class="fas fa-user"></i> ${product.rating.count} rated the product.</p>
       <h3>Price: $ ${product.price}</h3>
