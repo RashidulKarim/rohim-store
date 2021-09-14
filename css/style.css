@@ -139,6 +139,11 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
+
+span .fas, .far {
+  color: #ffc107;
+} 
+
 /* media quarey  */
 @media only screen and (max-width: 768px) {
   #all-products {

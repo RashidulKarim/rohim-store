@@ -38,6 +38,24 @@ const showProducts = (products) => {
   allProductsArea.textContent = ''; 
   for (const product of products) {
     const image = product.image;
+    const ratting = product.rating.rate;
+    console.log(ratting);
+    
+    let star = '';
+    let count = 0;
+    for(i=0; i<5;i++){
+      if(Math.floor(ratting)>i){
+        star += '<i class="fas fa-star"></i>'
+      }
+      else if (ratting.toString().includes(".") && count ===0){
+        star += '<i class="fas fa-star-half-alt"></i>'
+        count++
+      }
+      else{
+        star += '<i class="far fa-star"></i>'
+      }
+    }
+    
     const div = document.createElement("div");
     div.classList.add("product");
     div.innerHTML = `<div class="single-product">
@@ -46,8 +64,9 @@ const showProducts = (products) => {
       </div>
       <h2 class='product-title'>${product.title.slice(0,20)}</h2>
       <p>Category: ${product.category}</p>
-      <p><span>${product.rating.rate}<i class="fas fa-star"></i>.
-      </span><span>${product.rating.count} reviews.</span></p>
+      <p>Ratting: <span class='ratting'>${star}</i>.
+      </span></p>
+      <p><i class="fas fa-user"></i> ${product.rating.count} rated the product.</p>
       <h3>Price: $ ${product.price}</h3>
       <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
       <button id="details-btn" data-toggle="modal" data-target="#myModal" onclick=loadDetails(${product.id}) class="btn btn-danger">Details</button>
@@ -85,7 +104,7 @@ const updatePrice = (id, value) => {
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = Math.round(value);
+  document.getElementById(id).innerText = value.toFixed(2);
 };
 
 // update delivery charge and total Tax
@@ -118,7 +137,7 @@ const updateTotal = () => {
 
 const completeOrder = () => {
   if(count>0){
-    orderCompleteMassage.innerText = "Thank You for Your Order.";
+    orderCompleteMassage.innerText = "Order placed successfully.";
     orderCompleteMassage.style.color = "green";
     count = 0;
     totalProducts.innerText = count;
